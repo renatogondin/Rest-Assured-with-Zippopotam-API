@@ -1,12 +1,19 @@
 package renato;
 
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
+
+
+
 import org.junit.Test;
 
-import static io.restassured.RestAssured.*;
-
-import static org.hamcrest.Matchers.*;
-
 public class BasicTests {
+	
+	
+	
+	
+	
 	
 	//checking place name
 	
@@ -84,5 +91,31 @@ public class BasicTests {
 		
 	}
 	
+	//method giving back USA as a country
+	
+	@Test
+	public void getCheckIfUsaIsGivenBack() {
+		given()
+		.when()
+		    .get("http://api.zippopotam.us/us/37188")
+		.then()
+		.assertThat().body("country", equalTo("United States"));
+	}
+	
+	//using PathParams
+	
+	@Test
+	public void usingPathParams() {
+		given()
+		    .pathParam("oneParam", "us")
+		    .pathParam("otherParam", "90210")
+		.when()
+		    .get("http://api.zippopotam.us/{oneParam}/{otherParam}")
+		.then()
+		.assertThat().body("country", equalTo("United States"));
+	}
+	
+	
+		
 
 }
